@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shy Talk - Cosmic Insights</title>
+  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&family=Montserrat:wght@300;600;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Astrology Background */
+    .astro-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1464802686167-b939a6910659') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+      background-color: #0a0a23;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Light Theme */
+    .light-theme {
+      background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1464802686167-b939a6910659') no-repeat center center fixed;
+      background-size: cover;
+      color: #0a0a23;
+    }
+
+    .light-theme .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .light-theme .chat-container {
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .light-theme .speech-bubble-user {
+      background: #1e3a8a;
+    }
+
+    .light-theme .speech-bubble-user:after {
+      border-top: 0.5rem solid #1e3a8a;
+    }
+
+    .light-theme .speech-bubble-bot {
+      background: #3b82f6;
+    }
+
+    .light-theme .speech-bubble-bot:after {
+      border-top: 0.5rem solid #3b82f6;
+    }
+
+    /* Particle Effect */
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Parallax Effect */
+    .parallax {
+      background-attachment: fixed;
+      background-position: center;
+      background-size: cover;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .parallax::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
+
+    .parallax-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+    }
+
+    /* Pulse Animation with Glow */
+    .pulse-glow {
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(1); box-shadow: 0 0 5px rgba(124, 58, 237, 0.5); }
+      50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(124, 58, 237, 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 5px rgba(124, 58, 237, 0.5); }
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Glassmorphism Effect */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Hover Glow */
+    .hover-glow:hover {
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.8);
+      transform: translateY(-4px);
+    }
+
+    /* Fade-In Animation */
+    .fade-in {
+      animation: fadeIn 1.5s ease-in;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide-In Animation */
+    .slide-in {
+      animation: slideIn 0.6s ease-out;
+    }
+    @keyframes slideIn {
+      0% { opacity: 0; transform: translateX(60px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Speech Bubble Styling */
+    .speech-bubble-user {
+      position: relative;
+      background: #3b82f6;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      margin-left: auto;
+      max-width: 80%;
+    }
+    .speech-bubble-user:after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      right: 1rem;
+      width: 0;
+      height: 0;
+      border-left: 0.5rem solid transparent;
+      border-right: 0.5rem solid transparent;
+      border-top: 0.5rem solid #3b82f6;
+    }
+
+    .speech-bubble-bot {
+      position: relative;
+      background: #8b5cf6;
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      color: white;
+      margin-bottom: 1.5rem;
+      margin-right: auto;
+      max-width: 80%;
+    }
+    .speech-bubble-bot:after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 1rem;
+      width: 0;
+      height: 0;
+      border-left: 0.5rem solid transparent;
+      border-right: 0.5rem solid transparent;
+      border-top: 0.5rem solid #8b5cf6;
+    }
+
+    /* Chat Container */
+    .chat-container {
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 1.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 0.75rem;
+    }
+
+    /* Sticky Chat Button */
+    .sticky-chat {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: #8b5cf6;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      cursor: pointer;
+      z-index: 20;
+      transition: transform 0.3s ease;
+    }
+    .sticky-chat:hover {
+      transform: scale(1.1);
+    }
+
+    /* Scroll to Top Button */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #8b5cf6;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      z-index: 20;
+    }
+
+    .scroll-to-top.show {
+      display: block;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #8b5cf6;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Active Navigation Link */
+    .nav-active {
+      color: #8b5cf6;
+      border-bottom: 2px solid #8b5cf6;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .glass-card {
+        padding: 1.5rem;
+      }
+      .text-5xl {
+        font-size: 2.5rem;
+      }
+      .text-3xl {
+        font-size: 1.75rem;
+      }
+      .chat-container {
+        max-height: 350px;
+      }
+      .text-4xl {
+        font-size: 2rem;
+      }
+      .parallax {
+        min-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body class="astro-bg min-h-screen text-white font-poppins">
+  <canvas id="particles"></canvas>
+  <div id="root"></div>
+  <button id="scroll-to-top" class="scroll-to-top">↑</button>
+  <button id="sticky-chat" class="sticky-chat hidden">Ask Shy Talk</button>
+
+  <script type="text/babel">
+    if (!window.React || !window.ReactDOM || !window.Babel) {
+      console.error("Required dependencies (React, ReactDOM, or Babel) are not loaded.");
+      document.getElementById('root').innerHTML = '<h1 style="color: white; text-align: center;">Error: Failed to load dependencies. Please check your internet connection.</h1>';
+    }
+
+    const zodiacSigns = [
+      { sign: "Aries", start: "03-21", end: "04-19" },
+      { sign: "Taurus", start: "04-20", end: "05-20" },
+      { sign: "Gemini", start: "05-21", end: "06-20" },
+      { sign: "Cancer", start: "06-21", end: "07-22" },
+      { sign: "Leo", start: "07-23", end: "08-22" },
+      { sign: "Virgo", start: "08-23", end: "09-22" },
+      { sign: "Libra", start: "09-23", end: "10-22" },
+      { sign: "Scorpio", start: "10-23", end: "11-21" },
+      { sign: "Sagittarius", start: "11-22", end: "12-21" },
+      { sign: "Capricorn", start: "12-22", end: "01-19" },
+      { sign: "Aquarius", start: "01-20", end: "02-18" },
+      { sign: "Pisces", start: "02-19", end: "03-20" },
+    ];
+
+    const horoscopes = {
+      Aries: "Today, take bold steps toward your goals with confidence.",
+      Taurus: "Patience will lead you to success; focus on stability.",
+      Gemini: "Your curiosity opens new doors—explore them!",
+      Cancer: "Strengthen emotional connections with loved ones today.",
+      Leo: "Lead with confidence; your charisma shines brightly.",
+      Virgo: "Attention to detail will bring rewards in your tasks.",
+      Libra: "Seek balance and harmony in all you do today.",
+      Scorpio: "Your intensity drives meaningful change—embrace it.",
+      Sagittarius: "Adventure awaits; embrace new experiences with joy.",
+      Capricorn: "Hard work pays off—stay focused on your ambitions.",
+      Aquarius: "Innovative ideas will spark exciting opportunities.",
+      Pisces: "Trust your intuition to guide you on the right path."
+    };
+
+    const careerAdvice = {
+      Aries: "Take the lead in projects to showcase your skills.",
+      Taurus: "Focus on long-term investments for career growth.",
+      Gemini: "Network with diverse groups to expand your horizons.",
+      Cancer: "Trust your instincts when making career decisions.",
+      Leo: "Seek roles where you can inspire and motivate others.",
+      Virgo: "Organize your tasks to boost efficiency.",
+      Libra: "Collaborate with others to achieve career goals.",
+      Scorpio: "Dive deep into research for career advancements.",
+      Sagittarius: "Explore international or travel-related opportunities.",
+      Capricorn: "Set clear career goals and work steadily toward them.",
+      Aquarius: "Innovate and propose bold ideas at work.",
+      Pisces: "Pursue creative or empathetic roles that align with your values."
+    };
+
+    const loveAdvice = {
+      Aries: "Be open to spontaneous romantic adventures.",
+      Taurus: "Build trust through steady and reliable actions.",
+      Gemini: "Communication will deepen your connections.",
+      Cancer: "Nurture your partner with care and empathy.",
+      Leo: "Express your passion boldly in relationships.",
+      Virgo: "Small gestures of love will strengthen bonds.",
+      Libra: "Seek harmony and mutual understanding in love.",
+      Scorpio: "Deep emotional connections will transform your relationships.",
+      Sagittarius: "Embrace freedom and shared adventures with your partner.",
+      Capricorn: "Commitment and loyalty will solidify your love life.",
+      Aquarius: "Embrace uniqueness in your romantic partnerships.",
+      Pisces: "Let your romantic dreams guide your heart."
+    };
+
+    const luckyNumbers = {
+      Aries: "7, 15, 23",
+      Taurus: "2, 8, 16",
+      Gemini: "5, 14, 22",
+      Cancer: "3, 9, 18",
+      Leo: "1, 10, 19",
+      Virgo: "4, 12, 21",
+      Libra: "6, 13, 20",
+      Scorpio: "8, 17, 25",
+      Sagittarius: "9, 15, 24",
+      Capricorn: "10, 16, 22",
+      Aquarius: "11, 18, 23",
+      Pisces: "12, 19, 24"
+    };
+
+    const elements = {
+      Aries: "Fire - Passionate and dynamic, you ignite inspiration.",
+      Taurus: "Earth - Grounded and reliable, you build lasting foundations.",
+      Gemini: "Air - Curious and communicative, you connect ideas effortlessly.",
+      Cancer: "Water - Emotional and intuitive, you nurture deeply.",
+      Leo: "Fire - Bold and charismatic, you shine in the spotlight.",
+      Virgo: "Earth - Practical and meticulous, you perfect the details.",
+      Libra: "Air - Balanced and diplomatic, you foster harmony.",
+      Scorpio: "Water - Intense and transformative, you dive into depths.",
+      Sagittarius: "Fire - Adventurous and optimistic, you seek freedom.",
+      Capricorn: "Earth - Ambitious and disciplined, you achieve greatness.",
+      Aquarius: "Air - Innovative and independent, you envision the future.",
+      Pisces: "Water - Dreamy and empathetic, you flow with compassion."
+    };
+
+    function getZodiacSign(dob) {
+      if (!dob) return null;
+      const [year, month, day] = dob.split('-').map(Number);
+      const dateStr = ${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')};
+      const currentDate = new Date(2000-${dateStr});
+      for (let sign of zodiacSigns) {
+        const startDate = new Date(2000-${sign.start});
+        const endDate = new Date(2000-${sign.end});
+        if (sign.sign === "Capricorn" && month === 12 && day >= 22) return "Capricorn";
+        if (sign.sign === "Capricorn" && month === 1 && day <= 19) return "Capricorn";
+        if (currentDate >= startDate && currentDate <= endDate) {
+          return sign.sign;
+        }
+      }
+      return null;
+    }
+
+    function getMoonPhase(dob) {
+      if (!dob) return "Unknown";
+      const [year, month, day] = dob.split('-').map(Number);
+      const date = new Date(year, month - 1, day);
+      const cycleLength = 29.53058867;
+      const knownNewMoon = new Date(2000, 0, 6).getTime();
+      const daysSinceNewMoon = (date.getTime() - knownNewMoon) / (1000 * 60 * 60 * 24);
+      const phase = (daysSinceNewMoon % cycleLength) / cycleLength;
+      if (phase < 0.0625 || phase >= 0.9375) return "New Moon - New beginnings";
+      if (phase < 0.1875) return "Waxing Crescent - Growth and intention";
+      if (phase < 0.3125) return "First Quarter - Action and challenges";
+      if (phase < 0.4375) return "Waxing Gibbous - Refinement and preparation";
+      if (phase < 0.5625) return "Full Moon - Illumination and culmination";
+      if (phase < 0.6875) return "Waning Gibbous - Gratitude and sharing";
+      if (phase < 0.8125) return "Last Quarter - Release and reflection";
+      return "Waning Crescent - Rest and surrender";
+    }
+
+    const App = () => {
+      const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+      const [isSignup, setIsSignup] = React.useState(false);
+      const [username, setUsername] = React.useState('');
+      const [password, setPassword] = React.useState('');
+      const [dob, setDob] = React.useState('');
+      const [chatMessages, setChatMessages] = React.useState([]);
+      const [isLoading, setIsLoading] = React.useState(false);
+      const [isDarkTheme, setIsDarkTheme] = React.useState(true);
+      const [isChatOpen, setIsChatOpen] = React.useState(false);
+      const [activeSection, setActiveSection] = React.useState('');
+      const chatContainerRef = React.useRef(null);
+
+      React.useEffect(() => {
+        if (chatMessages.length > 0 && chatContainerRef.current) {
+          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+      }, [chatMessages]);
+
+      React.useEffect(() => {
+        const handleScroll = () => {
+          const scrollButton = document.getElementById('scroll-to-top');
+          const stickyChatButton = document.getElementById('sticky-chat');
+          if (window.scrollY > 300) {
+            scrollButton.classList.add('show');
+            stickyChatButton.classList.add('hidden');
+          } else {
+            scrollButton.classList.remove('show');
+            stickyChatButton.classList.remove('hidden');
+          }
+
+          const sections = preloadedQuestions.map((q, index) => question-${index});
+          let currentSection = '';
+          for (const section of sections) {
+            const element = document.getElementById(section);
+            if (element && element.getBoundingClientRect().top <= 100) {
+              currentSection = section;
+            }
+          }
+          setActiveSection(currentSection);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const handleLogin = () => {
+        if (username && password) {
+          setIsLoading(true);
+          setTimeout(() => {
+            setIsLoggedIn(true);
+            setChatMessages([{ sender: 'bot', text: Welcome to Shy Talk, ${username}! Embark on a cosmic journey with me! }]);
+            setIsLoading(false);
+          }, 1000);
+        } else {
+          alert('Please fill in all fields.');
+        }
+      };
+
+      const handleSignup = () => {
+        if (username && password && dob) {
+          setIsLoading(true);
+          setTimeout(() => {
+            setIsLoggedIn(true);
+            setIsSignup(false);
+            setChatMessages([{ sender: 'bot', text: Welcome to Shy Talk, ${username}! Your celestial adventure begins now! }]);
+            setIsLoading(false);
+          }, 1000);
+        } else {
+          alert('Please fill in all fields.');
+        }
+      };
+
+      const handleQuestion = (questionType) => {
+        if (!dob) {
+          setChatMessages([...chatMessages, { sender: 'bot', text: 'Please enter your date of birth first.' }]);
+          return;
+        }
+
+        const sign = getZodiacSign(dob);
+        if (!sign) {
+          setChatMessages([...chatMessages, { sender: 'bot', text: 'Invalid date of birth. Please try again.' }]);
+          return;
+        }
+
+        let userMessage = '';
+        let botMessage = '';
+
+        switch (questionType) {
+          case 'zodiac':
+            userMessage = 'What is my zodiac sign?';
+            botMessage = Your zodiac sign is ${sign}.;
+            break;
+          case 'horoscope':
+            userMessage = 'What is my daily horoscope?';
+            botMessage = Daily Horoscope: ${horoscopes[sign]};
+            break;
+          case 'career':
+            userMessage = 'What are my career insights?';
+            botMessage = Career Insights: ${careerAdvice[sign]};
+            break;
+          case 'love':
+            userMessage = 'What is my love compatibility?';
+            botMessage = Love Compatibility: ${loveAdvice[sign]};
+            break;
+          case 'lucky':
+            userMessage = 'What are my lucky numbers?';
+            botMessage = Lucky Numbers: ${luckyNumbers[sign]};
+            break;
+          case 'moon':
+            userMessage = 'What was the moon phase when I was born?';
+            botMessage = Moon Phase: ${getMoonPhase(dob)};
+            break;
+          case 'element':
+            userMessage = 'What is my zodiac element?';
+            botMessage = Element Insight: ${elements[sign]};
+            break;
+          default:
+            return;
+        }
+
+        setChatMessages([
+          ...chatMessages,
+          { sender: 'user', text: userMessage },
+          { sender: 'bot', text: botMessage }
+        ]);
+      };
+
+      const handleShare = () => {
+        const sign = getZodiacSign(dob);
+        if (!sign) {
+          alert('Please enter your date of birth to share your zodiac sign.');
+          return;
+        }
+        const shareData = {
+          title: 'My Zodiac Sign with Shy Talk',
+          text: I discovered my zodiac sign is ${sign} with Shy Talk! Check yours at Shy Talk - Cosmic Insights.,
+          url: window.location.href
+        };
+        if (navigator.share) {
+          navigator.share(shareData).catch(console.error);
+        } else {
+          alert('Share feature not supported. Copy this: ' + shareData.text);
+        }
+      };
+
+      const handleClearChat = () => {
+        setChatMessages([{ sender: 'bot', text: Chat cleared! Shy Talk is ready to answer your cosmic questions, ${username}. }]);
+      };
+
+      const toggleTheme = () => {
+        setIsDarkTheme(!isDarkTheme);
+        document.body.classList.toggle('light-theme');
+      };
+
+      const toggleChat = () => {
+        setIsChatOpen(true); // Always open the chat section when clicked
+        setTimeout(() => {
+          document.getElementById('chat-section').scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      };
+
+      const preloadedQuestions = [
+        {
+          question: "What is a birth chart?",
+          answer: "A birth chart maps the positions of celestial bodies at your birth, revealing your personality and life path.",
+          image: "https://images.unsplash.com/photo-1606841969877-47b81e80e6dd"
+        },
+        {
+          question: "How do zodiac signs influence personality?",
+          answer: "Zodiac signs reflect traits based on the sun’s position at birth, shaping how you think and act.",
+          image: "https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45"
+        },
+        {
+          question: "What is love compatibility in astrology?",
+          answer: "Love compatibility analyzes how two people’s zodiac signs interact, predicting relationship harmony.",
+          image: "https://images.unsplash.com/photo-1519742866993-66d3cfef4bbd"
+        },
+        {
+          question: "How does a horoscope work?",
+          answer: "A horoscope uses planetary movements to offer daily or weekly guidance for your zodiac sign.",
+          image: "https://images.unsplash.com/photo-1465101162946-4377e57745c3"
+        },
+        {
+          question: "What are lucky numbers in astrology?",
+          answer: "Lucky numbers are tied to your zodiac sign, believed to bring fortune in decisions or events.",
+          image: "https://images.unsplash.com/photo-1503435824048-a799a3a84bf2"
+        },
+        {
+          question: "What are the elements in astrology?",
+          answer: "The four elements—Fire, Earth, Air, Water—define core traits of each zodiac sign.",
+          image: "https://images.unsplash.com/photo-1515208940360-93e6f2a772b4"
+        },
+        {
+          question: "What is a moon sign?",
+          answer: "Your moon sign reflects your emotional inner world, based on the moon’s position at birth.",
+          image: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d"
+        },
+        {
+          question: "How do planets affect astrology?",
+          answer: "Planets influence different aspects of life, like communication or ambition, in your birth chart.",
+          image: "https://images.unsplash.com/photo-1454789548928-9efd0cb13655"
+        },
+        {
+          question: "What is a rising sign?",
+          answer: "Your rising sign, or ascendant, shapes your outward personality and first impressions.",
+          image: "https://images.unsplash.com/photo-1543722530-d2c3201371e7"
+        },
+        {
+          question: "What are retrograde planets?",
+          answer: "Retrograde planets appear to move backward, often signaling introspection or delays.",
+          image: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3"
+        },
+        {
+          question: "What is a solar return?",
+          answer: "A solar return is your astrological birthday, marking new themes for the year ahead.",
+          image: "https://images.unsplash.com/photo-1505807741273-835f5a508e36"
+        },
+        {
+          question: "How do transits affect us?",
+          answer: "Planetary transits influence life events by interacting with your birth chart.",
+          image: "https://images.unsplash.com/photo-1512438248244-f0f7c1e31866"
+        },
+        {
+          question: "What is a stellium in astrology?",
+          answer: "A stellium is a cluster of three or more planets in one sign, amplifying its energy.",
+          image: "https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7"
+        }
+      ];
+
+      const cosmicInsights = [
+        {
+          title: "The Power of the Cosmos",
+          description: "Discover how the stars align to guide your destiny and shape your journey.",
+          image: "https://images.unsplash.com/photo-1516339901601-2e1b62dc0c45"
+        },
+        {
+          title: "Lunar Influence",
+          description: "The moon’s phases affect your emotions and decisions—learn to harness its energy.",
+          image: "https://images.unsplash.com/photo-1532693322450-2cb5c511067d"
+        },
+        {
+          title: "Planetary Alignments",
+          description: "Understand how planetary movements create opportunities and challenges in your life.",
+          image: "https://images.unsplash.com/photo-1454789548928-9efd0cb13655"
+        }
+      ];
+
+      const QuestionCard = ({ question, answer, image, id }) => {
+        const [isOpen, setIsOpen] = React.useState(false);
+        return (
+          <div id={id} className="glass-card rounded-xl p-8 shadow-2xl hover-glow fade-in">
+            <div
+              className="speech-bubble-bot cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <h3 className="text-xl font-montserrat font-bold flex justify-between items-center">
+                {question}
+                <span>{isOpen ? '▲' : '▼'}</span>
+              </h3>
+            </div>
+            {isOpen && (
+              <div className="fade-in">
+                <p className="text-gray-200 font-poppins mt-4">{answer}</p>
+                <img
+                  src={image}
+                  alt={question}
+                  className="mt-6 rounded-lg w-full h-48 object-cover"
+                  loading="lazy"
+                />
+              </div>
+            )}
+          </div>
+        );
+      };
+
+      if (!isLoggedIn) {
+        return (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="glass-card p-10 sm:p-12 rounded-2xl shadow-2xl max-w-md w-full fade-in">
+              <h1 className="text-4xl sm:text-5xl font-cinzel font-bold mb-8 text-center gradient-text">
+                {isSignup ? 'Join the Cosmos' : 'Enter the Cosmos'}
+              </h1>
+              <div className="space-y-6">
+                <input
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+                {isSignup && (
+                  <input
+                    type="date"
+                    placeholder="Date of Birth"
+                    value={dob}
+                    onChange={(e) => setDob(e.target.value)}
+                    className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                )}
+                <button
+                  onClick={isSignup ? handleSignup : handleLogin}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow disabled:opacity-50"
+                  disabled={isLoading}
+                >
+                  {isLoading ? <div className="spinner"></div> : (isSignup ? 'Sign Up' : 'Login')}
+                </button>
+                <p className="text-center text-sm">
+                  {isSignup ? 'Already in the cosmos?' : "Not yet in the cosmos?"}{' '}
+                  <span
+                    onClick={() => setIsSignup(!isSignup)}
+                    className="text-purple-300 cursor-pointer hover:underline"
+                  >
+                    {isSignup ? 'Login' : 'Sign Up'}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="min-h-screen fade-in">
+          {/* Hero Section */}
+          <div className="parallax" style={{ backgroundImage: url('https://images.unsplash.com/photo-1464802686167-b939a6910659') }}>
+            <div className="parallax-content">
+              <h1 className="text-5xl md:text-7xl font-cinzel font-bold gradient-text mb-4">Shy Talk: Cosmic Insights</h1>
+              <p className="text-xl md:text-2xl font-poppins max-w-2xl mx-auto">Unlock the secrets of the universe and discover your celestial path with Shy Talk.</p>
+              <a
+                href="#chat-section"
+                className="mt-8 inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-4 rounded-lg font-medium pulse-glow hover-glow"
+                onClick={toggleChat}
+              >
+                Begin Your Journey
+              </a>
+            </div>
+          </div>
+
+          {/* Header */}
+          <header className="flex items-center justify-between p-6 bg-black bg-opacity-60 sticky top-0 z-10">
+            <div className="flex items-center">
+              <img
+                src="https://images.unsplash.com/photo-1532693322450-2cb5c511067d"
+                alt="Moon Logo"
+                className="w-20 h-20 mr-4 rounded-full"
+                loading="lazy"
+              />
+              <h1 className="text-4xl font-cinzel font-bold text-white">Shy Talk</h1>
+            </div>
+            <nav className="hidden md:flex space-x-6">
+              <a href="#questions" className="text-white hover:text-purple-300">Explore Questions</a>
+              <a href="#insights" className="text-white hover:text-purple-300">Cosmic Insights</a>
+              <a href="#chat-section" className="text-white hover:text-purple-300" onClick={toggleChat}>Ask Shy Talk</a>
+              <a href="#" className="text-white hover:text-purple-300">AI Compatibility</a>
+              <a href="#" className="text-white hover:text-purple-300">Numerology AI</a>
+            </nav>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={toggleTheme}
+                className="bg-gray-800 text-white rounded-lg p-2 hover:bg-gray-700"
+              >
+                {isDarkTheme ? 'Light' : 'Dark'} Theme
+              </button>
+              <select className="bg-gray-800 text-white rounded-lg p-2">
+                <option>English</option>
+                <option>Hindi</option>
+                <option>French</option>
+                <option>German</option>
+                <option>Spanish</option>
+              </select>
+            </div>
+          </header>
+
+          {/* Main Content */}
+          <div className="max-w-7xl mx-auto p-4 sm:p-8">
+            {/* Questions Navigation */}
+            <div id="questions" className="mb-12">
+              <h2 className="text-3xl font-cinzel font-bold text-center gradient-text mb-8">
+                Explore Cosmic Questions
+              </h2>
+              <div className="flex flex-wrap gap-4 justify-center">
+                {preloadedQuestions.map((q, index) => (
+                  <a
+                    key={index}
+                    href={#question-${index}}
+                    className={`text-white hover:text-purple-300 px-4 py-2 ${activeSection === question-${index} ? 'nav-active' : ''}`}
+                  >
+                    {q.question}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Preloaded Questions Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+              {preloadedQuestions.map((q, index) => (
+                <QuestionCard
+                  key={index}
+                  id={question-${index}}
+                  question={q.question}
+                  answer={q.answer}
+                  image={q.image}
+                />
+              ))}
+              <div className="glass-card rounded-xl p-8 shadow-2xl flex items-center justify-center">
+                <a
+                  href="https://www.astroyogi.com/celebrityastrologer/darun.aspx"
+                  target="_blank"
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-4 rounded-lg font-medium pulse-glow hover-glow text-center"
+                >
+                  Consult an Astrologer
+                </a>
+              </div>
+            </div>
+
+            {/* Cosmic Insights Section */}
+            <div id="insights" className="mb-12">
+              <h2 className="text-3xl font-cinzel font-bold text-center gradient-text mb-8">
+                Cosmic Insights
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {cosmicInsights.map((insight, index) => (
+                  <div key={index} className="glass-card rounded-xl p-8 shadow-2xl hover-glow fade-in">
+                    <img
+                      src={insight.image}
+                      alt={insight.title}
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                      loading="lazy"
+                    />
+                    <h3 className="text-xl font-montserrat font-bold">{insight.title}</h3>
+                    <p className="text-gray-200 font-poppins mt-2">{insight.description}</p>
+                    <button
+                      className="mt-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                      onClick={() => alert('Learn more about ' + insight.title)}
+                    >
+                      Learn More
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Interactive Chat Section */}
+            <div id="chat-section" className="glass-card rounded-xl p-8 shadow-2xl">
+              <div
+                className="flex justify-between items-center cursor-pointer"
+                onClick={toggleChat}
+              >
+                <h2 className="text-3xl font-cinzel font-bold gradient-text">
+                  Ask Shy Talk
+                </h2>
+                <span>{isChatOpen ? '▲' : '▼'}</span>
+              </div>
+              {isChatOpen && (
+                <div className="fade-in">
+                  <div className="mt-6">
+                    <label className="block text-lg font-montserrat mb-2">
+                      Enter Your Date of Birth
+                    </label>
+                    <input
+                      type="date"
+                      value={dob}
+                      onChange={(e) => setDob(e.target.value)}
+                      className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 mb-6">
+                    <button
+                      onClick={() => handleQuestion('zodiac')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Know Your Zodiac Sign
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('horoscope')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Daily Horoscope
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('career')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Career Insights
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('love')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Love Compatibility
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('lucky')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Lucky Numbers
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('moon')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Moon Phase
+                    </button>
+                    <button
+                      onClick={() => handleQuestion('element')}
+                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Zodiac Element
+                    </button>
+                    <button
+                      onClick={handleShare}
+                      className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Share Your Sign
+                    </button>
+                    <button
+                      onClick={handleClearChat}
+                      className="bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow"
+                    >
+                      Clear Chat
+                    </button>
+                    <a
+                      href="https://www.astroyogi.com/celebrityastrologer/darun.aspx"
+                      target="_blank"
+                      className="bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white p-3 rounded-lg font-medium pulse-glow hover-glow text-center"
+                    >
+                      Talk to Astrologer
+                    </a>
+                  </div>
+                  <div className="chat-container" ref={chatContainerRef}>
+                    {chatMessages.map((msg, index) => (
+                      <div
+                        key={index}
+                        className={${msg.sender === 'user' ? 'speech-bubble-user' : 'speech-bubble-bot'} slide-in}
+                        style={{ animationDelay: ${index * 0.1}s }}
+                      >
+                        {msg.text}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Additional Parallax Section */}
+          <div className="parallax" style={{ backgroundImage: url('https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7') }}>
+            <div className="parallax-content">
+              <h2 className="text-4xl md:text-5xl font-cinzel font-bold gradient-text mb-4">Your Cosmic Destiny Awaits</h2>
+              <p className="text-xl font-poppins max-w-2xl mx-auto">Dive deeper into the mysteries of the stars and uncover your unique place in the universe.</p>
+              <a
+                href="#chat-section"
+                className="mt-8 inline-block bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white p-4 rounded-lg font-medium pulse-glow hover-glow"
+                onClick={toggleChat}
+              >
+                Ask Shy Talk Now
+              </a>
+            </div>
+          </div>
+
+          <footer className="text-center mt-12 text-gray-400 font-montserrat py-8">
+            <p>© 2025 Shy Talk - Cosmic Insights. Powered by xAI.</p>
+            <div className="mt-4 flex justify-center space-x-4">
+              <a href="#" className="text-purple-300 hover:underline">Privacy Policy</a>
+              <a href="#" className="text-purple-300 hover:underline">Terms of Service</a>
+              <a href="#" className="text-purple-300 hover:underline">Contact Us</a>
+            </div>
+          </footer>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    try {
+      root.render(<App />);
+    } catch (error) {
+      console.error("Failed to render React app:", error);
+      document.getElementById('root').innerHTML = '<h1 style="color: white; text-align: center;">Error: Failed to render the application. Please check the console for details.</h1>';
+    }
+
+    // Particle Effect
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particlesArray = [];
+    const numberOfParticles = 150;
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 5 + 1;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.05;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height || this.size <= 0.2) {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 5 + 1;
+        }
+      }
+      draw() {
+        ctx.fillStyle = 'rgba(124, 58, 237, 0.6)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function init() {
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    // Resize Canvas
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // Scroll to Top
+    document.getElementById('scroll-to-top').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Sticky Chat Button
+    document.getElementById('sticky-chat').addEventListener('click', () => {
+      document.getElementById('chat-section').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('sticky-chat').classList.add('hidden');
+      document.dispatchEvent(new Event('toggleChat')); // Trigger chat open
+    });
+
+    // Custom event to toggle chat
+    document.addEventListener('toggleChat', () => {
+      const chatSection = document.getElementById('chat-section');
+      if (chatSection) {
+        chatSection.querySelector('div.cursor-pointer').click();
+      }
+    });
+  </script>
+</body>
+</html>
